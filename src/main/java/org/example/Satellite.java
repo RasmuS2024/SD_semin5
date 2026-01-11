@@ -10,7 +10,7 @@ public abstract class Satellite {
         this.name = name;
         this.batteryLevel = batteryLevel;
         this.isActive = false;
-        System.out.println("Создан спутник: " + name + " (заряд: " + (int)(batteryLevel * 100) + "%)");
+        System.out.println("Создан спутник: " + name + " (заряд: " + batteryLevelToPercent() + "%)");
     }
 
     public boolean activate() {
@@ -19,7 +19,7 @@ public abstract class Satellite {
             System.out.println("Спутник " + name + " активирован");
             return true;
         }
-        System.out.println(name + ": Ошибка активации (заряд: " + (int)(batteryLevel * 100) + "%)");
+        System.out.println(name + ": Ошибка активации (заряд: " + batteryLevelToPercent() + "%)");
         return false;
     }
 
@@ -46,6 +46,10 @@ public abstract class Satellite {
                 deActivate();
             }
         }
+    }
+
+    public int batteryLevelToPercent() {
+        return (int)(batteryLevel * 100);
     }
 
 }
