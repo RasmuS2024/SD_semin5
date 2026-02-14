@@ -1,56 +1,40 @@
 package org.example;
 
-public abstract class Satellite {
+public abstract class Satellite implements EnergySystem.EnergyListener {
     protected String name;
-    protected boolean isActive;
-    protected double batteryLevel;
-    private static final double MINIMUM_BATTERY_LEVEL = 0.20;
+    protected SatelliteState state;
+    protected EnergySystem energy;
 
     public Satellite(String name, double batteryLevel) {
         this.name = name;
-        this.batteryLevel = batteryLevel;
-        this.isActive = false;
-        System.out.println("Создан спутник: " + name + " (заряд: " + batteryLevelToPercent() + "%)");
+        this.state = new SatelliteState();
+        this.energy = new EnergySystem(batteryLevel);
+        this.energy.setListener(this);
+
+        System.out.println("Создан спутник: " + name + " (заряд: " + energy.batteryLevelToPercent() + "%)");
     }
 
-    public boolean activate() {
-        if (batteryLevel > MINIMUM_BATTERY_LEVEL && !isActive) {
-            isActive = true;
-            System.out.println("✅ " + name + ": Активация успешна");
-            return true;
-        }
-        System.out.println("❌ " + name + ": Ошибка активации (заряд: " + batteryLevelToPercent() + "%)");
-        return false;
+    @Override
+    public void onLowBattery() {
+        System.out.println("НИЗКИЙ ЗАРЯД! " + name + " деактивируется...");
+        deActivate();
+    }
+
+    public void activate() {
+        state.activate(this);
     }
 
     public void deActivate() {
-        if (isActive) {
-            isActive = false;
-            System.out.println("Спутник " + name + " деактивирован");
-        }
+        state.deActivate(this);
     }
 
     protected abstract void performMission();
 
     public String getName() { return name; }
 
-    public double getBatteryLevel() { return batteryLevel; }
+    public EnergySystem getEnergySystem() { return energy; }
 
-    public boolean isActive() { return isActive; }
-
-    public void consumeBattery(double amount) {
-        if (amount > 0) {
-            batteryLevel = Math.max(0.0, batteryLevel - amount);
-            if (batteryLevel <= MINIMUM_BATTERY_LEVEL && isActive) {
-                System.out.println("НИЗКИЙ ЗАРЯД! " + name + " деактивируется...");
-                deActivate();
-            }
-        }
-    }
-
-    public int batteryLevelToPercent() {
-        return (int)(batteryLevel * 100);
-    }
+    public SatelliteState getSatelliteState() { return state; }
 
 }
 
