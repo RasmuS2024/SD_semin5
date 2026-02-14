@@ -26,11 +26,11 @@ public class EnergySystem {
 
         double oldLevel = batteryLevel;
 
+        batteryLevel = Math.max(0.0, batteryLevel - amount);
+
         if (oldLevel > MINIMUM_BATTERY_LEVEL && batteryLevel <= MINIMUM_BATTERY_LEVEL) {
             listener.onLowBattery();
         }
-
-        batteryLevel = Math.max(0.0, batteryLevel - amount);
     }
 
     public double getMinimumBatteryLevel() {
