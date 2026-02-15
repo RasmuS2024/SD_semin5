@@ -40,4 +40,9 @@ public class EnergySystem {
     public int batteryLevelToPercent() {
         return (int)(batteryLevel * 100);
     }
+
+    @Override
+    public String toString() {
+        return "energy=EnergySystem{batteryLevel=" + batteryLevelToPercent() + "%}";
+    }
 }

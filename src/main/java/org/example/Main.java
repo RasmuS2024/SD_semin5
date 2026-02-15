@@ -6,10 +6,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class Main {
-    private static final int CHAR_REPEAT_COUNT = 50;  //количество знаков тире - для рисования полосок в терминале
+    private static final int CHAR_REPEAT_COUNT = 50;  //количество знаков - для разделителей в терминале
 
     public static void main(String[] args) {
-        System.out.println("ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ");
+        System.out.println("ЗАПУСК СИСТЕМЫ УПРАВЛЕНИЯ СПУТНИКОВОЙ ГРУППИРОВКОЙ"
+                + " \uD83C\uDF0D \uD83D\uDCE1 \uD83D\uDEF0\uFE0F \uD83D\uDEF0\uFE0F \uD83D\uDEF0\uFE0F");
         printSeparator();
 
         ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
@@ -17,7 +18,8 @@ public class Main {
         ConstellationRepository constellationRepository = context.getBean(ConstellationRepository.class);
         SpaceOperationCenterService spaceOperationCenterService = context.getBean(SpaceOperationCenterService.class);
 
-        System.out.println("СОЗДАНИЕ СПЕЦИАЛИЗИРОВАННЫХ СПУТНИКОВ:");
+        System.out.println();
+        System.out.println("СОЗДАНИЕ СПЕЦИАЛИЗИРОВАННЫХ СПУТНИКОВ: \uD83D\uDEF0\uFE0F");
         printSeparator();
 
         CommunicationSatellite commSat1 = new CommunicationSatellite("Связь-1", 0.85, 500);
@@ -29,26 +31,41 @@ public class Main {
 
         printSeparator();
         spaceOperationCenterService.createAndSaveConstellation("Орбита-1");
-
         printSeparator();
 
-        System.out.println("ФОРМИРОВАНИЕ ГРУППИРОВКИ");
+        spaceOperationCenterService.createAndSaveConstellation("Орбита-2");
         printSeparator();
+
+        System.out.println("ФОРМИРОВАНИЕ ГРУППИРОВОК \uD83D\uDEF0\uFE0F \uD83D\uDEF0\uFE0F \uD83D\uDEF0\uFE0F");
+        printSeparator();
+
         spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", commSat1);
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", commSat2);
         spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", imgSat1);
         spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", imgSat2);
-        spaceOperationCenterService.addSatelliteToConstellation("Орбита-1", imgSat3);
+
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", commSat2);
+        spaceOperationCenterService.addSatelliteToConstellation("Орбита-2", imgSat3);
 
         printSeparator();
         spaceOperationCenterService.showConstellationStatus("Орбита-1");
         printSeparator();
 
-        System.out.println("АКТИВАЦИЯ СПУТНИКОВ");
+        spaceOperationCenterService.showConstellationStatus("Орбита-2");
+        printSeparator();
+
+
+        System.out.println("АКТИВАЦИЯ СПУТНИКОВ \uD83D\uDCE1 \uD83D\uDEF0\uFE0F");
+
         spaceOperationCenterService.activateAllSatellites("Орбита-1");
         printSeparator();
 
+        spaceOperationCenterService.activateAllSatellites("Орбита-2");
+        printSeparator();
+
         spaceOperationCenterService.executeConstellationMission("Орбита-1");
+        printSeparator();
+
+        spaceOperationCenterService.executeConstellationMission("Орбита-2");
         printSeparator();
     }
 

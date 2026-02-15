@@ -32,9 +32,10 @@ public class CommunicationSatellite extends Satellite {
     public String toString() {
         return "CommunicationSatellite{" +
                 "bandwidth=" + bandwidth +
-                ", name='" + name + '\'' +
-                ", isActive=" + state.isActive() +
-                ", batteryLevel=" + energy.getBatteryLevel() +
-                '}';
+                ", name='" + name + "', " +
+                state +
+                ", " +
+                energy +
+                "}";
     }
 }

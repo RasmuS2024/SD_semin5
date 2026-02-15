@@ -26,6 +26,15 @@ public class SatelliteConstellation {
         }
     }
 
+    public void activteAllSatellites() {
+        System.out.println("АКТИВАЦИЯ СПУТНИКОВ ГРУППИРОВКИ " + constellationName.toUpperCase());
+        System.out.println("=".repeat(50));
+
+        for (Satellite satellite : satellites) {
+            satellite.activate();
+        }
+    }
+
     public void executeAllMissions() {
         System.out.println("ВЫПОЛНЕНИЕ МИССИЙ ГРУППИРОВКИ " + constellationName.toUpperCase());
         System.out.println("=".repeat(50));
@@ -41,7 +50,11 @@ public class SatelliteConstellation {
 
     @Override
     public String toString() {
-        return satellites.stream()
+        return "{" + constellationName +
+                "=SatelliteConstellation{constellationName='" +
+                constellationName +
+                "', satellites=" +
+                satellites.stream()
                 .map(Satellite::toString)
                 .collect(Collectors.joining(",\n", "[", "]"));
     }

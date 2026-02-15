@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.stream.Collectors;
+
 public class SatelliteState {
     protected boolean isActive;
 
@@ -9,6 +11,11 @@ public class SatelliteState {
 
     public boolean activate(Satellite satellite) {
         EnergySystem energy = satellite.getEnergySystem();
+
+        if (isActive) {
+            System.out.println("✅ " + satellite.getName() + ": уже активен (заряд: " + energy.batteryLevelToPercent() + "%)");
+            return true;
+        }
 
         if (energy.getBatteryLevel() > energy.getMinimumBatteryLevel() && !isActive) {
             isActive = true;
@@ -29,6 +36,13 @@ public class SatelliteState {
             isActive = false;
             System.out.println("Спутник " + satellite.getName() + " деактивирован");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "state=SatelliteState{isActive=" +
+                isActive + ", statusMessage='" +
+                (isActive ? "Активен" : "Не активирован") + "'}";
     }
 
 }

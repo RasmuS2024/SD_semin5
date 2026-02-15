@@ -40,9 +40,8 @@ public class ImagingSatellite extends Satellite{
         return "ImagingSatellite{" +
                 "resolution=" + resolution +
                 ", photosTaken=" + photosTaken +
-                ", name='" + name + '\'' +
-                ", isActive=" + state.isActive() +
-                ", batteryLevel=" + energy.getBatteryLevel() +
-                '}';
+                ", name='" + name + "'" +
+                state + ", " +
+                energy + "}";
     }
 }
