@@ -1,16 +1,22 @@
 package org.example;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class SatelliteConstellation {
     private final String constellationName;
     private final List<Satellite> satellites = new ArrayList<>();
 
+    public SatelliteConstellation() {
+        this.constellationName = "";
+    }
+
     public SatelliteConstellation(String constellationName) {
         this.constellationName = constellationName;
-        System.out.println("Создана спутниковая группировка: " + constellationName);
     }
 
     public void addSatellite(Satellite satellite) {
