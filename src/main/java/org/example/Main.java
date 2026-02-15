@@ -59,13 +59,22 @@ public class Main {
         spaceOperationCenterService.activateAllSatellites("Орбита-1");
         printSeparator();
 
+        spaceOperationCenterService.showConstellationStatus("Орбита-1");
+        printSeparator();
+
         spaceOperationCenterService.activateAllSatellites("Орбита-2");
+        printSeparator();
+
+        spaceOperationCenterService.showConstellationStatus("Орбита-2");
         printSeparator();
 
         spaceOperationCenterService.executeConstellationMission("Орбита-1");
         printSeparator();
 
         spaceOperationCenterService.executeConstellationMission("Орбита-2");
+        printSeparator();
+
+        spaceOperationCenterService.printConstellationRepositoryToConsole();
         printSeparator();
     }
 

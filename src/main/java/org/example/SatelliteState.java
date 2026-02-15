@@ -40,7 +40,7 @@ public class SatelliteState {
 
     @Override
     public String toString() {
-        return "state=SatelliteState{isActive=" +
+        return "SatelliteState{isActive=" +
                 isActive + ", statusMessage='" +
                 (isActive ? "Активен" : "Не активирован") + "'}";
     }

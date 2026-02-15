@@ -2,7 +2,12 @@ package org.example;
 
 public class EnergySystem {
     protected double batteryLevel;
-    private static final double MINIMUM_BATTERY_LEVEL = 0.15;
+    private static final double LOW_BATTERY_THRESHOLD = 0.15;
+
+    private static final double MAX_BATTERY = 1.0;
+
+    private static final double MIN_BATTERY = 0.0;
+
     private EnergyListener listener;
 
     public interface EnergyListener {
@@ -14,7 +19,7 @@ public class EnergySystem {
     }
 
     public EnergySystem (double batteryLevel) {
-        this.batteryLevel = batteryLevel;
+        this.batteryLevel = Math.max(MIN_BATTERY, Math.min(MAX_BATTERY, batteryLevel));
     }
 
     public double getBatteryLevel() {
@@ -28,13 +33,13 @@ public class EnergySystem {
 
         batteryLevel = Math.max(0.0, batteryLevel - amount);
 
-        if (oldLevel > MINIMUM_BATTERY_LEVEL && batteryLevel <= MINIMUM_BATTERY_LEVEL) {
+        if (oldLevel > LOW_BATTERY_THRESHOLD && batteryLevel <= LOW_BATTERY_THRESHOLD) {
             listener.onLowBattery();
         }
     }
 
     public double getMinimumBatteryLevel() {
-        return MINIMUM_BATTERY_LEVEL;
+        return LOW_BATTERY_THRESHOLD;
     }
 
     public int batteryLevelToPercent() {
@@ -43,6 +48,6 @@ public class EnergySystem {
 
     @Override
     public String toString() {
-        return "energy=EnergySystem{batteryLevel=" + batteryLevelToPercent() + "%}";
+        return "EnergySystem{batteryLevel=" + batteryLevelToPercent() + "%}";
     }
 }

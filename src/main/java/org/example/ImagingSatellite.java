@@ -40,8 +40,9 @@ public class ImagingSatellite extends Satellite{
         return "ImagingSatellite{" +
                 "resolution=" + resolution +
                 ", photosTaken=" + photosTaken +
-                ", name='" + name + "'" +
-                state + ", " +
-                energy + "}";
+                ", name='" + name +
+                "', state=" + state +
+                ", energy=" + energy +
+                "}";
     }
 }

@@ -17,6 +17,7 @@ public class SatelliteConstellation {
 
     public SatelliteConstellation(String constellationName) {
         this.constellationName = constellationName;
+        System.out.println("Создана спутниковая группировка: " + constellationName);
     }
 
     public void addSatellite(Satellite satellite) {
@@ -44,19 +45,32 @@ public class SatelliteConstellation {
         }
     }
 
-    public List <Satellite> getSatellites() { return satellites; }
+    public void getAllSatellitesStatuses() {
+        System.out.println("СТАТУС ГРУППИРОВКИ: " + constellationName.toUpperCase());
+        System.out.println("=".repeat(50));
 
-    public String getConstellationName() { return constellationName; }
+        for (Satellite satellite : satellites) {
+            System.out.println(satellite.state);
+        }
+    }
+
+    public List <Satellite> getSatellites() {
+        return satellites;
+    }
+
+    public String getConstellationName() {
+        return constellationName;
+    }
 
     @Override
     public String toString() {
-        return "{" + constellationName +
-                "=SatelliteConstellation{constellationName='" +
+        return "SatelliteConstellation{constellationName='" +
                 constellationName +
                 "', satellites=" +
                 satellites.stream()
                 .map(Satellite::toString)
-                .collect(Collectors.joining(",\n", "[", "]"));
+                .collect(Collectors.joining(",\n", "[\n", "]")) +
+                "}";
     }
 
 }

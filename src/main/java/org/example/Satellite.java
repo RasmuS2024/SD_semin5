@@ -30,11 +30,17 @@ public abstract class Satellite implements EnergySystem.EnergyListener {
 
     protected abstract void performMission();
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public EnergySystem getEnergySystem() { return energy; }
+    public EnergySystem getEnergySystem() {
+        return energy;
+    }
 
-    public SatelliteState getSatelliteState() { return state; }
+    public SatelliteState getSatelliteState() {
+        return state;
+    }
 
 }
 
