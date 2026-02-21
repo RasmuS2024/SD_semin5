@@ -37,7 +37,4 @@ public class SpaceOperationCenterService {
         satelliteConstellation.getAllSatellitesStatuses();
     }
 
-    public void printConstellationRepositoryToConsole() {
-        System.out.println(this.constellationRepository);
-    }
 }

@@ -56,14 +56,6 @@ public class SatelliteConstellation {
         }
     }
 
-    public List <Satellite> getSatellites() {
-        return satellites;
-    }
-
-    public String getConstellationName() {
-        return constellationName;
-    }
-
     @Override
     public String toString() {
         return "SatelliteConstellation{constellationName='" +

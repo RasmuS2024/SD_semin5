@@ -1,5 +1,8 @@
 package seminars;
 
+import lombok.Data;
+
+@Data
 public class SatelliteState {
     protected boolean isActive;
 
@@ -8,14 +11,14 @@ public class SatelliteState {
     }
 
     public boolean activate(Satellite satellite) {
-        EnergySystem energy = satellite.getEnergySystem();
+        EnergySystem energy = satellite.getEnergy();
 
         if (isActive) {
             System.out.println("✅ " + satellite.getName() + ": уже активен (заряд: " + energy.batteryLevelToPercent() + "%)");
             return true;
         }
 
-        if (energy.getBatteryLevel() > energy.getMinimumBatteryLevel() && !isActive) {
+        if (energy.getBatteryLevel() >= energy.getMinimumBatteryLevel() && !isActive) {
             isActive = true;
             System.out.println("✅ " + satellite.getName() + ": Активация успешна");
             return true;
