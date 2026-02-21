@@ -1,11 +1,10 @@
-package org.example;
+package seminars.repository;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import seminars.SatelliteConstellation;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,7 +15,7 @@ public class ConstellationRepository {
         this.constellations = new HashMap<>();
     }
 
-    public void add(SatelliteConstellation constellation) {
+    public void addConstellation(SatelliteConstellation constellation) {
         constellations.put(constellation.getConstellationName(), constellation);
         System.out.println("Сохранена группировка: " + constellation.getConstellationName());
     }
@@ -59,4 +58,6 @@ public class ConstellationRepository {
                 .map(entry -> entry.getKey() + "=" + entry.getValue())
                 .collect(Collectors.joining(",\n\n", "{\n", "\n}"));
     }
+
+
 }

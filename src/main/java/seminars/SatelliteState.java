@@ -1,6 +1,4 @@
-package org.example;
-
-import java.util.stream.Collectors;
+package seminars;
 
 public class SatelliteState {
     protected boolean isActive;

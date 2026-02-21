@@ -1,8 +1,12 @@
-package org.example;
+package seminars;
+
+import lombok.Getter;
 
 public abstract class Satellite implements EnergySystem.EnergyListener {
+    @Getter
     protected String name;
     protected SatelliteState state;
+    @Getter
     protected EnergySystem energy;
 
     public Satellite(String name, double batteryLevel) {
@@ -30,17 +34,8 @@ public abstract class Satellite implements EnergySystem.EnergyListener {
 
     protected abstract void performMission();
 
-    public String getName() {
-        return name;
-    }
-
     public EnergySystem getEnergySystem() {
         return energy;
     }
-
-    public SatelliteState getSatelliteState() {
-        return state;
-    }
-
 }
 

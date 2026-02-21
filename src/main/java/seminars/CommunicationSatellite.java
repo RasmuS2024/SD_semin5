@@ -1,16 +1,15 @@
-package org.example;
+package seminars;
+
+import lombok.Getter;
 
 public class CommunicationSatellite extends Satellite {
+    @Getter
     private final double bandwidth;
     private static final double SEND_DATA_ENERGY_CONSUMPTION = 0.03;    //количество энергии для отправки данных
 
     public CommunicationSatellite(String name, double batteryLevel, double bandwidth) {
         super(name, batteryLevel);
         this.bandwidth = bandwidth;
-    }
-
-    public double getBandwidth() {
-        return bandwidth;
     }
 
     @Override

@@ -1,8 +1,10 @@
-package org.example;
+package seminars;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import seminars.repository.ConstellationRepository;
+import seminars.services.SpaceOperationCenterService;
 
 @SpringBootApplication
 public class Main {

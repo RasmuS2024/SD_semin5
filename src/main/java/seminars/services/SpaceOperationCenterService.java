@@ -1,6 +1,9 @@
-package org.example;
+package seminars.services;
 
 import org.springframework.stereotype.Service;
+import seminars.Satellite;
+import seminars.SatelliteConstellation;
+import seminars.repository.ConstellationRepository;
 
 @Service
 public class SpaceOperationCenterService {
@@ -11,7 +14,7 @@ public class SpaceOperationCenterService {
     }
 
     public void createAndSaveConstellation(String name) {
-        this.constellationRepository.add(new SatelliteConstellation(name));
+        this.constellationRepository.addConstellation(new SatelliteConstellation(name));
     }
 
     public void addSatelliteToConstellation(String constellationName, Satellite satellite) {
@@ -26,7 +29,7 @@ public class SpaceOperationCenterService {
 
     public void activateAllSatellites(String constellationName) {
         SatelliteConstellation constellation = this.constellationRepository.getConstellation(constellationName);
-        constellation.activteAllSatellites();
+        constellation.activateAllSatellites();
     }
 
     public void showConstellationStatus(String constellationName) {

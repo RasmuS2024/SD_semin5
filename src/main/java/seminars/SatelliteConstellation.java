@@ -1,11 +1,13 @@
-package org.example;
+package seminars;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 @Service
 public class SatelliteConstellation {
     private final String constellationName;
@@ -27,7 +29,7 @@ public class SatelliteConstellation {
         }
     }
 
-    public void activteAllSatellites() {
+    public void activateAllSatellites() {
         System.out.println("АКТИВАЦИЯ СПУТНИКОВ ГРУППИРОВКИ " + constellationName.toUpperCase());
         System.out.println("=".repeat(50));
 

@@ -1,12 +1,12 @@
-# Cеминар 3 по SysDеsign
+# Cеминар 4 по SysDеsign
 
 
 ### Скриншоты работы программы:
 
-![Скриншот1](docs/screenshots/Screenshot6.png)
+![Скриншот1](docs/screenshots/Screenshot1.png)
 
-![Скриншот2](docs/screenshots/Screenshot7.png)
+![Скриншот2](docs/screenshots/Screenshot2.png)
 
-![Скриншот3](docs/screenshots/Screenshot8.png)
+![Скриншот3](docs/screenshots/Screenshot3.png)
 
-![Скриншот4](docs/screenshots/Screenshot9.png)
+![Скриншот4](docs/screenshots/Screenshot4.png)

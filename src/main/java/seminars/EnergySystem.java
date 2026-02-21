@@ -1,29 +1,28 @@
-package org.example;
+package seminars;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class EnergySystem {
+
     protected double batteryLevel;
+
     private static final double LOW_BATTERY_THRESHOLD = 0.15;
 
     private static final double MAX_BATTERY = 1.0;
 
     private static final double MIN_BATTERY = 0.0;
 
+    @Setter
     private EnergyListener listener;
 
     public interface EnergyListener {
         void onLowBattery();
     }
 
-    public void setListener(EnergyListener listener) {
-        this.listener = listener;
-    }
-
     public EnergySystem (double batteryLevel) {
         this.batteryLevel = Math.max(MIN_BATTERY, Math.min(MAX_BATTERY, batteryLevel));
-    }
-
-    public double getBatteryLevel() {
-        return batteryLevel;
     }
 
     public void consume(double amount) {
