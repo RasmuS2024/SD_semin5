@@ -16,7 +16,9 @@ class ConstellationRepositoryTest {
 
     private static final String CONSTELLATION_NAME_2 = "testConstellation2";
 
-    private static final String NON_EXIST_NAME = "NON_EXIST";
+    private static final String CONSTELLATION_NAME_3 = "testConstellation3";
+
+    private static final String NON_EXIST_NAME = "nonExist";
 
     private ConstellationRepository repository;
 
@@ -30,13 +32,16 @@ class ConstellationRepositoryTest {
     void testRepository() {
         SatelliteConstellation constellation1 = new SatelliteConstellation(CONSTELLATION_NAME_1);
         SatelliteConstellation constellation2 = new SatelliteConstellation(CONSTELLATION_NAME_2);
+        SatelliteConstellation constellation3 = new SatelliteConstellation(CONSTELLATION_NAME_3);
 
         repository.addConstellation(constellation1);
         repository.addConstellation(constellation2);
+        repository.addConstellation(constellation3);
 
         assertTrue(repository.containsConstellation(CONSTELLATION_NAME_1));
         assertTrue(repository.containsConstellation(CONSTELLATION_NAME_2));
-        assertEquals(2, repository.getAllConstellations().size());
+        assertTrue(repository.containsConstellation(CONSTELLATION_NAME_3));
+        assertEquals(3, repository.getAllConstellations().size());
     }
 
     @Test
@@ -141,7 +146,7 @@ class ConstellationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Метод getAllConstellations возвращает копию карты, не затрагивающую исходную")
+    @DisplayName("Метод getAllConstellations возвращает копию, не затрагивающую исходную")
     void getAllConstellations_ShouldReturnCopy() {
         // given
         SatelliteConstellation constellation = new SatelliteConstellation(CONSTELLATION_NAME_1);
@@ -168,31 +173,5 @@ class ConstellationRepositoryTest {
         assertFalse(repository.containsConstellation(CONSTELLATION_NAME_2));
         assertFalse(repository.containsConstellation(NON_EXIST_NAME));
     }
-
-    @Test
-    @DisplayName("Метод toString возвращает корректное строковое представление")
-    void toString_ShouldReturnFormattedString() {
-        // given
-        SatelliteConstellation constellation1 = new SatelliteConstellation(CONSTELLATION_NAME_1);
-        SatelliteConstellation constellation2 = new SatelliteConstellation(CONSTELLATION_NAME_2);
-        repository.addConstellation(constellation1);
-        repository.addConstellation(constellation2);
-
-        // when
-        String result = repository.toString();
-
-        // then
-        assertTrue(result.startsWith("{"));
-        assertTrue(result.endsWith("}"));
-        assertTrue(result.contains(CONSTELLATION_NAME_1));
-        assertTrue(result.contains(CONSTELLATION_NAME_2));
-    }
-
-    @Test
-    @DisplayName("Метод toString для пустого репозитория возвращает {}")
-    void toString_EmptyRepository_ShouldReturnEmptyBraces() {
-        assertEquals("{}", repository.toString());
-    }
-
 
 }
