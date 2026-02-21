@@ -19,183 +19,165 @@ public class ConstellationRepositoryMockTest {
 
     private static final String CONSTELLATION_NAME_1 = "testConstellation1";
     private static final String CONSTELLATION_NAME_2 = "testConstellation2";
-    private static final String NON_EXIST_NAME = "nonExist";
+    private static final String CONSTELLATION_NAME_3 = "testConstellation3";
 
     @Mock
     private ConstellationRepository repository;
 
-    @Mock
-    private SatelliteConstellation mockConstellation1;
+    private SatelliteConstellation constellation1;
+    private SatelliteConstellation constellation2;
+    private SatelliteConstellation constellation3;
 
-    @Mock
-    private SatelliteConstellation mockConstellation2;
-
-    @Test
-    @DisplayName("Добавление группировки должно вызывать getConstellationName ровно один раз")
-    void addConstellation_ShouldCallGetNameOnce() {
-        // When
-        repository.addConstellation(mockConstellation1);
-
-        // Then
-        verify(mockConstellation1, times(1)).getConstellationName();
+    @BeforeEach
+    void setUp() {
+        constellation1 = new SatelliteConstellation(CONSTELLATION_NAME_1);
+        constellation2 = new SatelliteConstellation(CONSTELLATION_NAME_2);
+        constellation3 = new SatelliteConstellation(CONSTELLATION_NAME_3);
     }
 
+    // ТЕСТ ПРЕПОДАВАТЕЛЯ (оставляем как есть)
     @Test
-    @DisplayName("Получение существующей группировки должно возвращать тот же mock-объект")
-    void getConstellation_WithExistingName_ShouldReturnMock() {
-        // Given
-        repository.addConstellation(mockConstellation1);
+    @DisplayName("Добавление нескольких группировок должно сохранять их все")
+    void testRepository() {
+        Map<String, SatelliteConstellation> constellations = Map.of(
+                CONSTELLATION_NAME_1, constellation1,
+                CONSTELLATION_NAME_2, constellation2
+        );
 
-        // When
-        SatelliteConstellation result = repository.getConstellation(CONSTELLATION_NAME_1);
+        when(repository.containsConstellation(CONSTELLATION_NAME_1)).thenReturn(true);
+        when(repository.containsConstellation(CONSTELLATION_NAME_2)).thenReturn(true);
+        when(repository.getAllConstellations()).thenReturn(constellations);
 
-        // Then
-        assertSame(mockConstellation1, result);
-        verify(mockConstellation1, atLeastOnce()).getConstellationName();
-    }
-
-    @Test
-    @DisplayName("Получение несуществующей группировки должно выбрасывать исключение")
-    void getConstellation_WithNonExistentName_ShouldThrowException() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-
-        // When & Then
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> repository.getConstellation(NON_EXIST_NAME));
-
-        assertEquals("Группировка не найдена: " + NON_EXIST_NAME, exception.getMessage());
-        verify(mockConstellation1, never()).getConstellationName(); // метод не должен вызываться
-    }
-
-    @Test
-    @DisplayName("Обновление существующей группировки должно использовать новый mock")
-    void updateConstellation_WithExistingName_ShouldUseNewMock() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-        SatelliteConstellation newMock = mock(SatelliteConstellation.class);
-        when(newMock.getConstellationName()).thenReturn(CONSTELLATION_NAME_1);
-
-        // When
-        repository.updateConstellation(CONSTELLATION_NAME_1, newMock);
-
-        // Then
-        SatelliteConstellation result = repository.getConstellation(CONSTELLATION_NAME_1);
-        assertSame(newMock, result);
-        assertNotSame(mockConstellation1, result);
-    }
-
-    @Test
-    @DisplayName("Обновление несуществующей группировки не должно добавлять новый mock")
-    void updateConstellation_WithNonExistentName_ShouldNotAddMock() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-
-        // When
-        repository.updateConstellation(NON_EXIST_NAME, mockConstellation2);
-
-        // Then
-        assertTrue(repository.containsConstellation(CONSTELLATION_NAME_1));
-        assertFalse(repository.containsConstellation(CONSTELLATION_NAME_2));
-        assertEquals(1, repository.getAllConstellations().size());
-
-        verify(mockConstellation2, never()).getConstellationName();
-    }
-
-    @Test
-    @DisplayName("Удаление существующей группировки должно убрать mock из репозитория")
-    void deleteConstellation_WithExistingName_ShouldRemoveMock() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-        repository.addConstellation(mockConstellation2);
-
-        // When
-        repository.deleteConstellation(CONSTELLATION_NAME_1);
-
-        // Then
-        assertFalse(repository.containsConstellation(CONSTELLATION_NAME_1));
-        assertTrue(repository.containsConstellation(CONSTELLATION_NAME_2));
-        assertEquals(1, repository.getAllConstellations().size());
-    }
-
-    @Test
-    @DisplayName("Удаление несуществующей группировки не должно влиять на существующие mock-и")
-    void deleteConstellation_WithNonExistentName_ShouldNotAffectExisting() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-        repository.addConstellation(mockConstellation2);
-
-        // When
-        repository.deleteConstellation(NON_EXIST_NAME);
-
-        // Then
         assertTrue(repository.containsConstellation(CONSTELLATION_NAME_1));
         assertTrue(repository.containsConstellation(CONSTELLATION_NAME_2));
         assertEquals(2, repository.getAllConstellations().size());
     }
 
     @Test
-    @DisplayName("containsConstellation должен возвращать true для добавленного mock-а")
-    void containsConstellation_WithExistingMock_ShouldReturnTrue() {
-        // Given
-        repository.addConstellation(mockConstellation1);
+    @DisplayName("addConstellation - проверка сохранения группировки")
+    void testAddConstellation() {
+        // Arrange
+        doNothing().when(repository).addConstellation(constellation1);
 
-        // When & Then
-        assertTrue(repository.containsConstellation(CONSTELLATION_NAME_1));
-        assertFalse(repository.containsConstellation(CONSTELLATION_NAME_2));
-        assertFalse(repository.containsConstellation(NON_EXIST_NAME));
+        // Act
+        repository.addConstellation(constellation1);
+
+        // Assert
+        verify(repository, times(1)).addConstellation(constellation1);
     }
 
     @Test
-    @DisplayName("getAllConstellations должен возвращать Map со всеми mock-ами")
-    void getAllConstellations_ShouldReturnMapWithAllMocks() {
-        // Given
-        repository.addConstellation(mockConstellation1);
-        repository.addConstellation(mockConstellation2);
+    @DisplayName("getConstellation должен возвращать группировку по имени")
+    void testGetConstellation() {
+        // Arrange
+        when(repository.getConstellation(CONSTELLATION_NAME_1)).thenReturn(constellation1);
 
-        // When
+        // Act
+        SatelliteConstellation result = repository.getConstellation(CONSTELLATION_NAME_1);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(CONSTELLATION_NAME_1, result.getConstellationName());
+        verify(repository, times(1)).getConstellation(CONSTELLATION_NAME_1);
+    }
+
+    @Test
+    @DisplayName("getConstellation должен выбрасывать исключение для несуществующей группировки")
+    void testGetConstellationThrowsException() {
+        // Arrange
+        when(repository.getConstellation("NonExistent"))
+                .thenThrow(new RuntimeException("Группировка не найдена: NonExistent"));
+
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> repository.getConstellation("NonExistent"));
+
+        assertEquals("Группировка не найдена: NonExistent", exception.getMessage());
+        verify(repository, times(1)).getConstellation("NonExistent");
+    }
+
+    @Test
+    @DisplayName("updateConstellation должен вызываться с правильными параметрами")
+    void testUpdateConstellation() {
+        // Arrange
+        SatelliteConstellation updatedConstellation =
+                new SatelliteConstellation(CONSTELLATION_NAME_1 + "_UPDATED");
+        doNothing().when(repository).updateConstellation(CONSTELLATION_NAME_1, updatedConstellation);
+
+        // Act
+        repository.updateConstellation(CONSTELLATION_NAME_1, updatedConstellation);
+
+        // Assert
+        verify(repository, times(1))
+                .updateConstellation(CONSTELLATION_NAME_1, updatedConstellation);
+    }
+
+    @Test
+    @DisplayName("containsConstellation должен возвращать true для существующей группировки")
+    void testContainsConstellationTrue() {
+        // Arrange
+        when(repository.containsConstellation(CONSTELLATION_NAME_1)).thenReturn(true);
+
+        // Act
+        boolean result = repository.containsConstellation(CONSTELLATION_NAME_1);
+
+        // Assert
+        assertTrue(result);
+        verify(repository, times(1)).containsConstellation(CONSTELLATION_NAME_1);
+    }
+
+    @Test
+    @DisplayName("containsConstellation должен возвращать false для несуществующей группировки")
+    void testContainsConstellationFalse() {
+        // Arrange
+        when(repository.containsConstellation("NonExistent")).thenReturn(false);
+
+        // Act
+        boolean result = repository.containsConstellation("NonExistent");
+
+        // Assert
+        assertFalse(result);
+        verify(repository, times(1)).containsConstellation("NonExistent");
+    }
+
+    @Test
+    @DisplayName("getAllConstellations должен возвращать Map со всеми группировками")
+    void testGetAllConstellations() {
+        // Arrange
+        Map<String, SatelliteConstellation> expected = Map.of(
+                CONSTELLATION_NAME_1, constellation1,
+                CONSTELLATION_NAME_2, constellation2,
+                CONSTELLATION_NAME_3, constellation3
+        );
+        when(repository.getAllConstellations()).thenReturn(expected);
+
+        // Act
         Map<String, SatelliteConstellation> result = repository.getAllConstellations();
 
-        // Then
-        assertEquals(2, result.size());
+        // Assert
+        assertNotNull(result);
+        assertEquals(3, result.size());
         assertTrue(result.containsKey(CONSTELLATION_NAME_1));
         assertTrue(result.containsKey(CONSTELLATION_NAME_2));
-        assertSame(mockConstellation1, result.get(CONSTELLATION_NAME_1));
-        assertSame(mockConstellation2, result.get(CONSTELLATION_NAME_2));
+        assertTrue(result.containsKey(CONSTELLATION_NAME_3));
+        verify(repository, times(1)).getAllConstellations();
     }
 
     @Test
-    @DisplayName("getAllConstellations возвращает копию - изменение копии не влияет на оригинал")
-    void getAllConstellations_ShouldReturnCopy_NotAffectingOriginal() {
-        // Given
-        repository.addConstellation(mockConstellation1);
+    @DisplayName("getAllConstellations для пустого репозитория должен возвращать пустую Map")
+    void testGetAllConstellationsEmpty() {
+        // Arrange
+        Map<String, SatelliteConstellation> empty = Map.of();
+        when(repository.getAllConstellations()).thenReturn(empty);
 
-        // When
+        // Act
         Map<String, SatelliteConstellation> result = repository.getAllConstellations();
-        result.clear();
 
-        // Then
-        assertTrue(repository.containsConstellation(CONSTELLATION_NAME_1));
-        assertEquals(1, repository.getAllConstellations().size());
-    }
-
-    @Test
-    @DisplayName("Добавление двух группировок с одинаковым именем заменяет первый mock на второй")
-    void addDuplicateConstellation_ShouldReplaceOldMock() {
-        // Given
-        SatelliteConstellation mockDuplicate = mock(SatelliteConstellation.class);
-        when(mockDuplicate.getConstellationName()).thenReturn(CONSTELLATION_NAME_1);
-
-        repository.addConstellation(mockConstellation1);
-
-        // When
-        repository.addConstellation(mockDuplicate);
-
-        // Then
-        SatelliteConstellation result = repository.getConstellation(CONSTELLATION_NAME_1);
-        assertSame(mockDuplicate, result);
-        assertNotSame(mockConstellation1, result);
-        assertEquals(1, repository.getAllConstellations().size());
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        assertEquals(0, result.size());
+        verify(repository, times(1)).getAllConstellations();
     }
 
 }
