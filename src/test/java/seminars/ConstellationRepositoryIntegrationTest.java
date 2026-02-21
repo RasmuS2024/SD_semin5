@@ -158,16 +158,16 @@ public class ConstellationRepositoryIntegrationTest {
         constellation.addSatellite(imagingSat);
         constellation.activateAllSatellites();
 
-        int initialCommBattery = commSat.getEnergy().batteryLevelToPercent();
-        int initialImagingBattery = imagingSat.getEnergy().batteryLevelToPercent();
+        double initialCommBattery = commSat.getEnergy().getBatteryLevel();
+        double initialImagingBattery = imagingSat.getEnergy().getBatteryLevel();
 
         // Act
         constellation.executeAllMissions();
 
         // Assert
-        assertTrue(commSat.getEnergy().batteryLevelToPercent() < initialCommBattery,
+        assertTrue(commSat.getEnergy().getBatteryLevel() < initialCommBattery,
                 "Энергия спутника связи должна уменьшиться");
-        assertTrue(imagingSat.getEnergy().batteryLevelToPercent() < initialImagingBattery,
+        assertTrue(imagingSat.getEnergy().getBatteryLevel() < initialImagingBattery,
                 "Энергия спутника ДЗЗ должна уменьшиться");
     }
 }

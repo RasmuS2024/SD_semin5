@@ -1,9 +1,8 @@
 package seminars;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
+@Data
 public class EnergySystem {
 
     protected double batteryLevel;
@@ -14,7 +13,6 @@ public class EnergySystem {
 
     private static final double MIN_BATTERY = 0.0;
 
-    @Setter
     private EnergyListener listener;
 
     public interface EnergyListener {
@@ -37,16 +35,8 @@ public class EnergySystem {
         }
     }
 
-    public double getMinimumBatteryLevel() {
-        return LOW_BATTERY_THRESHOLD;
-    }
-
     public int batteryLevelToPercent() {
         return (int)(batteryLevel * 100);
     }
 
-    @Override
-    public String toString() {
-        return "EnergySystem{batteryLevel=" + batteryLevelToPercent() + "%}";
-    }
 }
