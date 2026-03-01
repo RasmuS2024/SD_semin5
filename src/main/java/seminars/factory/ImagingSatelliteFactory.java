@@ -1,18 +1,17 @@
 package seminars.factory;
 
+import org.springframework.stereotype.Component;
 import seminars.domains.ImagingSatellite;
 import seminars.domains.Satellite;
 
+@Component
 public class ImagingSatelliteFactory implements SatelliteFactory {
-    private final double defaultResolution;
 
-    public ImagingSatelliteFactory(double defaultResolution) {
-        this.defaultResolution = defaultResolution;
-    }
+    private static final double DEFAULT_RESOLUTION = 100.0;
 
     @Override
     public Satellite createSatellite(String name, double batteryLevel) {
-        return new ImagingSatellite(name, batteryLevel, defaultResolution);
+        return new ImagingSatellite(name, batteryLevel, DEFAULT_RESOLUTION);
     }
 
     @Override

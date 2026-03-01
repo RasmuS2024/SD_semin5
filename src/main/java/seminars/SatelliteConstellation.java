@@ -53,7 +53,7 @@ public class SatelliteConstellation {
         System.out.println("=".repeat(50));
 
         for (Satellite satellite : satellites) {
-            System.out.println(satellite.state);
+            System.out.println(satellite.getState());
         }
     }
 

@@ -1,6 +1,7 @@
 package seminars.domains;
 
 import lombok.Data;
+import seminars.constants.EnergySystemConstants;
 
 @Data
 public abstract class Satellite {
@@ -11,7 +12,12 @@ public abstract class Satellite {
     public Satellite(String name, double batteryLevel) {
         this.name = name;
         this.state = new SatelliteState();
-        this.energy = new EnergySystem(batteryLevel);
+        this.energy = EnergySystem.builder()
+                .batteryLevel(batteryLevel)
+                .lowBatteryThreshold(EnergySystemConstants.LOW_BATTERY_THRESHOLD)
+                .maxBattery(EnergySystemConstants.MAX_BATTERY)
+                .minBattery(EnergySystemConstants.MIN_BATTERY)
+                .build();
 
         System.out.println("Создан спутник: " + name + " (заряд: " + energy.batteryLevelToPercent() + "%)");
     }
@@ -19,6 +25,7 @@ public abstract class Satellite {
     public boolean activate() {
         if (state.activate(energy.hasSufficientPower())) {
             System.out.println(name + ": Активация успешна");
+            return true;
         }
 
         System.out.println(name + ": Ошибка активации (заряд: " + (getEnergy().batteryLevelToPercent() + "%)"));

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import seminars.domains.CommunicationSatellite;
 import seminars.domains.ImagingSatellite;
+import seminars.domains.Satellite;
 import seminars.factory.CommunicationSatelliteFactory;
 import seminars.factory.ImagingSatelliteFactory;
 import seminars.repository.ConstellationRepository;
@@ -18,9 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DisplayName("Интеграционные тесты для ConstellationRepository")
 public class ConstellationRepositoryIntegrationTest {
-
-    private final CommunicationSatelliteFactory commFactory = new CommunicationSatelliteFactory(COMM_POWER);
-    private final ImagingSatelliteFactory imgFactory = new ImagingSatelliteFactory(IMG_RESOLUTION);
 
     private static final String CONSTELLATION_BASE_NAME = "Орбита";
     private static final String SATELLITE_COMM_1 = "Спутник связи-1";
@@ -35,6 +33,10 @@ public class ConstellationRepositoryIntegrationTest {
 
     @Autowired
     private ConstellationRepository repository;
+    @Autowired
+    private CommunicationSatelliteFactory commFactory;
+    @Autowired
+    private ImagingSatelliteFactory imgFactory;
 
     private String uniqueConstellationName;
 
@@ -69,8 +71,8 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        CommunicationSatellite commSat = (CommunicationSatellite) commFactory.createSatellite(SATELLITE_COMM_1, FULL_BATTERY);
-        ImagingSatellite imagingSat = imgFactory.createSatellite(SATELLITE_IMG_1, FULL_BATTERY);
+        Satellite commSat = commFactory.createSatelliteWithParameter(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
+        Satellite imagingSat = imgFactory.createSatelliteWithParameter(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
 
         // Act
         constellation.addSatellite(commSat);
@@ -88,8 +90,8 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        CommunicationSatellite commSat = new CommunicationSatellite(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
-        ImagingSatellite imagingSat = new ImagingSatellite(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
+        Satellite commSat = commFactory.createSatelliteWithParameter(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
+        Satellite imagingSat = imgFactory.createSatelliteWithParameter(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
 
         constellation.addSatellite(commSat);
         constellation.addSatellite(imagingSat);
@@ -117,7 +119,8 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        ImagingSatellite lowBatterySat = new ImagingSatellite("Тестовый-спутник", LOW_BATTERY, IMG_RESOLUTION);
+        Satellite lowBatterySat = imgFactory.createSatelliteWithParameter("Тестовый-спутник", LOW_BATTERY, IMG_RESOLUTION);
+
         constellation.addSatellite(lowBatterySat);
 
         // Act
@@ -140,7 +143,7 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        ImagingSatellite thresholdSat = new ImagingSatellite("Пороговый-спутник", THRESHOLD_BATTERY, IMG_RESOLUTION);
+        Satellite thresholdSat = imgFactory.createSatelliteWithParameter("Пороговый-спутник", THRESHOLD_BATTERY, IMG_RESOLUTION);
         constellation.addSatellite(thresholdSat);
 
         // Act
@@ -158,8 +161,8 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        CommunicationSatellite commSat = new CommunicationSatellite(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
-        ImagingSatellite imagingSat = new ImagingSatellite(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
+        Satellite commSat = commFactory.createSatelliteWithParameter(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
+        Satellite imagingSat = imgFactory.createSatelliteWithParameter(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
 
         constellation.addSatellite(commSat);
         constellation.addSatellite(imagingSat);

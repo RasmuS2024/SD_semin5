@@ -1,18 +1,17 @@
 package seminars.factory;
 
+import org.springframework.stereotype.Component;
 import seminars.domains.CommunicationSatellite;
 import seminars.domains.Satellite;
 
+@Component
 public class CommunicationSatelliteFactory implements SatelliteFactory {
-    private final double defaultBandwidth;
 
-    public CommunicationSatelliteFactory(double defaultBandwidth) {
-        this.defaultBandwidth = defaultBandwidth;
-    }
+    private static final double DEFAULT_BANDWIDTH = 100.0;
 
     @Override
     public Satellite createSatellite(String name, double batteryLevel) {
-        return new CommunicationSatellite(name, batteryLevel, defaultBandwidth);
+        return new CommunicationSatellite(name, batteryLevel, DEFAULT_BANDWIDTH);
     }
 
     @Override
