@@ -1,4 +1,4 @@
-package seminars;
+package seminars.domains;
 
 import lombok.Getter;
 
@@ -21,13 +21,15 @@ public class ImagingSatellite extends Satellite{
             takePhoto();
             energy.consume(PHOTO_ENERGY_CONSUMPTION);
         } else {
-            System.out.println(name + " не может выполнить съемку - не активен");
+            System.out.println(name + ": не может выполнить съемку - не активен");
         }
     }
 
     private void takePhoto() {
-        photosTaken++;
-        System.out.println(name + ": Снимок #" + photosTaken + " сделан!");
+        if (state.isActive()) {
+            photosTaken++;
+            System.out.println(name + ": Снимок #" + photosTaken + " сделан!");
+        }
     }
 
     @Override

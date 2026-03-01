@@ -1,7 +1,7 @@
 package seminars.services;
 
 import org.springframework.stereotype.Service;
-import seminars.Satellite;
+import seminars.domains.Satellite;
 import seminars.SatelliteConstellation;
 import seminars.repository.ConstellationRepository;
 

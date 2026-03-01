@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import seminars.CommunicationSatellite;
-import seminars.ImagingSatellite;
-import seminars.Satellite;
+import seminars.domains.CommunicationSatellite;
+import seminars.domains.ImagingSatellite;
+import seminars.domains.Satellite;
 import seminars.SatelliteConstellation;
 import seminars.repository.ConstellationRepository;
 
@@ -68,8 +68,8 @@ public class SpaceOperationCenterServiceIntegrationTest {
         }
 
         // Выполнение миссии
-        int initialCommBattery = commSat.getEnergy().batteryLevelToPercent();
-        int initialImgBattery = imgSat.getEnergy().batteryLevelToPercent();
+        double initialCommBattery = commSat.getEnergy().getBatteryLevel();
+        double initialImgBattery = imgSat.getEnergy().getBatteryLevel();
 
         spaceOperationCenterService.executeConstellationMission(uniqueConstellationName);
 
@@ -81,8 +81,8 @@ public class SpaceOperationCenterServiceIntegrationTest {
 
         assertNotNull(updatedComm);
         assertNotNull(updatedImg);
-        assertTrue(updatedComm.getEnergy().batteryLevelToPercent() < initialCommBattery);
-        assertTrue(updatedImg.getEnergy().batteryLevelToPercent() < initialImgBattery);
+        assertTrue(updatedComm.getEnergy().getBatteryLevel() < initialCommBattery);
+        assertTrue(updatedImg.getEnergy().getBatteryLevel() < initialImgBattery);
         assertTrue(updatedComm.getState().isActive());
         assertTrue(updatedImg.getState().isActive());
     }

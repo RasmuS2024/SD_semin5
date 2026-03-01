@@ -1,4 +1,4 @@
-package seminars;
+package seminars.domains;
 
 import lombok.Getter;
 
@@ -24,7 +24,9 @@ public class CommunicationSatellite extends Satellite {
     }
 
     private void sendData(double amountOfData) {
-        System.out.println(name + ": Отправил " + amountOfData + " Мбит данных!");
+        if (state.isActive()) {
+            System.out.println(name + ": Отправил " + amountOfData + " Мбит данных!");
+        }
     }
 
     @Override

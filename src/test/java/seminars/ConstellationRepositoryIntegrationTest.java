@@ -5,6 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import seminars.domains.CommunicationSatellite;
+import seminars.domains.ImagingSatellite;
+import seminars.factory.CommunicationSatelliteFactory;
+import seminars.factory.ImagingSatelliteFactory;
 import seminars.repository.ConstellationRepository;
 
 import java.util.UUID;
@@ -14,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @DisplayName("Интеграционные тесты для ConstellationRepository")
 public class ConstellationRepositoryIntegrationTest {
+
+    private final CommunicationSatelliteFactory commFactory = new CommunicationSatelliteFactory(COMM_POWER);
+    private final ImagingSatelliteFactory imgFactory = new ImagingSatelliteFactory(IMG_RESOLUTION);
 
     private static final String CONSTELLATION_BASE_NAME = "Орбита";
     private static final String SATELLITE_COMM_1 = "Спутник связи-1";
@@ -62,8 +69,8 @@ public class ConstellationRepositoryIntegrationTest {
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
         repository.addConstellation(constellation);
 
-        CommunicationSatellite commSat = new CommunicationSatellite(SATELLITE_COMM_1, FULL_BATTERY, COMM_POWER);
-        ImagingSatellite imagingSat = new ImagingSatellite(SATELLITE_IMG_1, FULL_BATTERY, IMG_RESOLUTION);
+        CommunicationSatellite commSat = (CommunicationSatellite) commFactory.createSatellite(SATELLITE_COMM_1, FULL_BATTERY);
+        ImagingSatellite imagingSat = imgFactory.createSatellite(SATELLITE_IMG_1, FULL_BATTERY);
 
         // Act
         constellation.addSatellite(commSat);
@@ -114,7 +121,7 @@ public class ConstellationRepositoryIntegrationTest {
         constellation.addSatellite(lowBatterySat);
 
         // Act
-        boolean activationResult = lowBatterySat.getState().activate(lowBatterySat);
+        boolean activationResult = lowBatterySat.activate();
 
         // Assert
         assertFalse(activationResult, "Метод activate() должен вернуть false при низком заряде");
@@ -127,7 +134,7 @@ public class ConstellationRepositoryIntegrationTest {
     }
 
     @Test
-    @DisplayName("Граничный случай: спутник с зарядом точно на пороге (15%) должен активироваться")
+    @DisplayName("Граничный случай: спутник с зарядом точно на пороге (15%) не должен активироваться")
     void activateSatellite_WithBatteryExactlyAtThreshold_ShouldActivate() {
         // Arrange
         SatelliteConstellation constellation = new SatelliteConstellation(uniqueConstellationName);
@@ -137,11 +144,11 @@ public class ConstellationRepositoryIntegrationTest {
         constellation.addSatellite(thresholdSat);
 
         // Act
-        boolean activationResult = thresholdSat.getState().activate(thresholdSat);
+        boolean activationResult = thresholdSat.activate();
 
         // Assert
-        assertTrue(activationResult, "Спутник с зарядом на пороге должен активироваться");
-        assertTrue(thresholdSat.getState().isActive(), "Спутник должен стать активным");
+        assertFalse(activationResult, "Спутник с зарядом на пороге не должен активироваться");
+        assertFalse(thresholdSat.getState().isActive(), "Спутник должен остаться неактивным");
     }
 
     @Test

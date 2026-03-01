@@ -1,4 +1,4 @@
-package seminars;
+package seminars.domains;
 
 import lombok.Data;
 
@@ -13,26 +13,25 @@ public class EnergySystem {
 
     private static final double MIN_BATTERY = 0.0;
 
-    private EnergyListener listener;
-
-    public interface EnergyListener {
-        void onLowBattery();
+    public double getLowBatteryThreshold() {
+        return LOW_BATTERY_THRESHOLD;
     }
 
     public EnergySystem (double batteryLevel) {
         this.batteryLevel = Math.max(MIN_BATTERY, Math.min(MAX_BATTERY, batteryLevel));
     }
 
-    public void consume(double amount) {
-        if (amount <= 0) return;
-
-        double oldLevel = batteryLevel;
-
-        batteryLevel = Math.max(0.0, batteryLevel - amount);
-
-        if (oldLevel > LOW_BATTERY_THRESHOLD && batteryLevel <= LOW_BATTERY_THRESHOLD) {
-            listener.onLowBattery();
+    public boolean consume(double amount) {
+        if (amount <= 0 || batteryLevel <= MIN_BATTERY) {
+            return false;
         }
+
+        batteryLevel = Math.max(MIN_BATTERY, batteryLevel - amount);
+        return true;
+    }
+    
+    public boolean hasSufficientPower() {
+        return batteryLevel > LOW_BATTERY_THRESHOLD;
     }
 
     public int batteryLevelToPercent() {

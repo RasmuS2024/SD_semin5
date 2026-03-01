@@ -2,6 +2,7 @@ package seminars;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;
+import seminars.domains.Satellite;
 
 import java.util.ArrayList;
 import java.util.List;
